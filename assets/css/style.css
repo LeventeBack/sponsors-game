@@ -1,0 +1,244 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+.sponsors-game-wrapper {
+  width: fit-content;
+  position: relative;
+  margin: 25px auto;
+  perspective: 1000px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  user-select: none;
+}
+
+canvas {
+  border: 1px solid black;
+  background-image: url('../img/floor.png');
+  background-size: 55px;
+}
+
+/* tablet css */
+.tablet {
+  --color-primary: #feae00;
+  --color-secondary: #f5f5f5;
+
+  --border-y-width: 16px;
+  --border-x-width: 60px;
+  
+  --width: 780px;
+  --height: 480px;
+
+  box-sizing: content-box;
+  position: absolute;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: var(--width);
+  height: var(--height);
+  border: 16px black solid;
+  border-width: var(--border-y-width) var(--border-x-width);
+  border-radius: 36px;
+  background: rgb(238, 238, 238);
+  box-shadow: 0 -5px 0 5px #333;
+z-index: 5;
+  
+  transform: rotateX(65deg) scale(0.75) translateY(30px);
+  transform-origin: 50%;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.35s;
+}
+.tablet.active {
+  transform: translateY(0) scale(1) rotateX(0);
+  visibility: visible;
+  opacity: 1;
+}
+
+/* The horizontal line on the top of the device */
+.tablet:before {
+  content: '';
+  display: block;
+  height: 60px;
+  width: 5px;
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #333;
+  border-radius: 10px;
+}
+
+/* The circle on the bottom of the device */
+.tablet:after {
+  content: '';
+  display: block;
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  top: 50%;
+  right: -65px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #333;
+}
+
+/* The  (or content) of the device */
+.tablet__screen {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 18% 82%;
+  background-color: #fff;
+}
+.tablet__header {
+  background-color: var(--color-primary);
+  padding: 7px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tablet__title {
+  color: var(--color-secondary);
+  letter-spacing: 1px;
+}
+.tablet__header img {
+  height: 100%;
+}
+.tablet__content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 15px;
+}
+.tablet__column{
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 15px;
+  text-align: justify;
+  font-size: 0.85rem;
+  text-indent: 1rem;
+}
+.tablet__video {
+  display: flex;
+  background-color: lightgray;
+}
+
+.tablet iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+.tablet a {
+  display: block;
+  margin-top: 15px;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  padding: 5px;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* width */
+.tablet ::-webkit-scrollbar {
+  width: 10px;
+}
+/*
+/* Track */
+.tablet ::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: lightgray;
+}
+
+/* Handle */
+.tablet ::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.tablet ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* *********************************** */
+/* MENU STYLES */
+/* *********************************** */
+.menu {
+  position: absolute;
+  background-color: #201c1c;
+  height: 100%;
+  width: 100%;
+  color: white;
+  text-align: center;
+  z-index: 10;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 15px 15px;
+  width: 100%;
+}
+.menu__button {
+  background-color: #50d752;
+  border: none;
+  padding: 10px;
+  text-align: center;
+  width: 75%;
+  color: #fff;
+  margin-top: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.menu__center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  min-width: 250px;
+}
+.menu__center .player-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+.menu__center .player {
+  --size: 55px;
+  --scale: 1.5;
+  height: calc(var(--size) * var(--scale));
+  width: calc(var(--size) * var(--scale));
+  padding: 10px 0;
+  background-size: calc(var(--size) * var(--scale) * 3);
+  cursor: pointer;
+}
+.menu__center .player.selected {
+  box-shadow: 0 0 10px #6e6e6e;
+  border-radius: 10px;
+}
+.menu__center .player--male {
+  background-image: url('../img/players/male.png');
+}
+.menu__center .player--female {
+  background-image: url('../img/players/female.png');
+}
+.menu__sponsors {
+  height: 100px;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+.menu__sponsors img {
+  max-width: 175px;
+  max-height: 100px;
+}
+.hidden {
+  display: none;
+}

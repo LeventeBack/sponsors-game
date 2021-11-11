@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sponsors Game</title>
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+  
+  <div class="sponsors-game-wrapper">
+    <div class="menu hidden" id="menu">
+      <h2>Willkommen in der digitalen Messehalle</h2>
+      <h3>Wähle einen Avatar, um dich durch die Messehalle zu bewegen</h3>
+      <div class="menu__center">
+        <div class="player-container">
+          <div class="player player--male selected" data-gender="male"></div>
+          <div class="player player--female" data-gender="female"></div>
+        </div>
+        <button class="menu__button" data-button="start">Start</button>
+      </div>
+      <div class="menu__sponsors">
+        <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
+        <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
+        <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
+        <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
+        <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
+      </div>
+    </div>
+    <canvas id="canvas"></canvas>
+    <div class="tablet">
+      <div class="tablet__screen">
+        <header class="tablet__header">  
+          <h3 class="tablet__title" data-company="name"></h3>
+          <img src="" alt="" data-company="logo">
+        </header>
+        <main class="tablet__content">
+          <div class="tablet__column">
+            <div data-company="description"></div>
+            <a href="" data-company="pdf">Download pdf</a>
+          </div>
+          <div class="tablet__column">
+            <div class="tablet__video" data-company="video"></div>
+            <a data-company="url" target="_blank" href="">The companies website</a>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script src="./assets/js/main.js" type="module"></script>
+
+</body>
+</html>
