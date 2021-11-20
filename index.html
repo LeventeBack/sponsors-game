@@ -29,24 +29,33 @@
       </div>
     </div>
     <canvas id="canvas"></canvas>
-    <div class="tablet">
-      <div class="tablet__screen">
-        <header class="tablet__header">  
-          <h3 class="tablet__title" data-company="name"></h3>
+
+    <div class="modal-overlay">
+
+      <div class="modal ">
+        <header class="modal__header">  
           <img src="" alt="" data-company="logo">
         </header>
-        <main class="tablet__content">
-          <div class="tablet__column">
-            <div data-company="description"></div>
-            <a href="" data-company="pdf">Download pdf</a>
+        <main class="modal__content">
+          <h3 class="modal__title" data-company="name"></h3>
+          <div class="modal__column">
+            <div class="modal__description" data-company="description"></div>
+            <a class="modal__link" href="" data-company="pdf">Download pdf</a>
           </div>
-          <div class="tablet__column">
-            <div class="tablet__video" data-company="video"></div>
-            <a data-company="url" target="_blank" href="">The companies website</a>
+          <div class="modal__column">
+            <div class="modal__video" data-company="video"></div>
+            <footer class="modal__footer">
+              <span>Du hast noch Fragen? Tritt dem Livechat bei und kläre sie direkt!</span>
+              <div>
+                <a data-company="" target="_blank" href="" class="modal__button">Mit XY sprenchen</a>
+                <a data-company="url" target="_blank" href="" class="modal__button">Zur Website von XY</a>
+              </div>
+            </footer>
           </div>
         </main>
       </div>
     </div>
+
   </div>
 
   <script src="./assets/js/main.js" type="module"></script>

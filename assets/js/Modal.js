@@ -1,11 +1,15 @@
-export default class Tablet {
+export default class Modal {
   constructor(){
-    this.device = document.querySelector(".tablet");
+    this.container = document.querySelector(".modal-overlay");
+
+    this.container.addEventListener('click', e => {
+      if(this.isVisible() && e.target == this.container)
+        this.hide();
+    })
   }
 
   load(company){
-    this.company = company
-    this.data = this.company.tablet;
+    this.data = company
 
     this.setContent("name", this.data.name);  
     this.setContent("description", this.data.description);
@@ -13,20 +17,20 @@ export default class Tablet {
     this.setContent("url", this.data.url, "href");
     this.setContent("pdf", this.data.pdf, "href");
     this.setContent("video", this.data.video);
-
-    this.setStyle();
+    
+    this.container.style.setProperty('--color-primary', this.data.color);
   }
 
   show(){
-    this.device.classList.add('active')
+    this.container.classList.add('active')
   }
 
   hide(){
-    this.device.classList.remove('active')
+    this.container.classList.remove('active')
   }
 
   isVisible(){
-    return this.device.classList.contains('active');
+    return this.container.classList.contains('active');
   }
 
   setContent(dataName, content, property = null){
@@ -36,10 +40,5 @@ export default class Tablet {
       element.innerHTML = content;
     else
       element.setAttribute(property, content);
-  }
-
-  setStyle(){
-    this.device.style.setProperty('--color-primary', this.data.colors.primary);
-    this.device.style.setProperty('--color-secondary', this.data.colors.secondary);
   }
 }

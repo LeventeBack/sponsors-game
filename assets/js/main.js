@@ -1,8 +1,8 @@
 // MODULE IMPORTS
-import Player,  {DIRECTIONS}  from "../js/Player.js";
-import Tablet  from "../js/Tablet.js";
+import Player,  {DIRECTIONS, PLAYER}  from "./Player.js";
+import Modal  from "./Modal.js";
 import { companies } from "./data.js";
-import Stand from "./Stand.js";
+import Room from "./Room.js";
 
 // GLOBAL CONSTANTS
 export const CANVAS = {
@@ -17,7 +17,7 @@ const KEYS = {
   [DIRECTIONS.RIGHT]: ['D', 'd', 'ArrowRight']
 }
 
-const FRAME_DELAY = 12;
+const FRAME_DELAY = 12; 
 const CYCLE_LOOP = [0, 1, 0, 2];
 
 // GLOBAL VARIABLES
@@ -32,21 +32,15 @@ const players = document.querySelectorAll('[data-gender]');
 const startButton = document.querySelector('[data-button="start"]');
 const gameMenu = document.querySelector('#menu')
 
+
 // CLASS INSTANCES
 const player = new Player(ctx);
-const tablet = new Tablet;
-export const vendors = [];
+const modal = new Modal;
+export let room = new Room(ctx, 1, 1); 
 
 // EVENT LISTENERS
 window.addEventListener('keydown', keyDownHandler);
 window.addEventListener('keyup', keyUpHandler);
-
-canvas.addEventListener('click', e => {
-  // hide tablet conditions
-  if(tablet.isVisible())
-    if(e.target === canvas || e.target === tablet.container)
-      tablet.hide();
-})
 
 players.forEach(player => player.addEventListener('click', () => selectPlayer(player)));
 
@@ -80,8 +74,10 @@ function startGame(){
 
 // ANIMATION RELATED FUNCTIONS
 function animation(){
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const clearOffset = 100
+  ctx.clearRect(-clearOffset, -clearOffset, canvas.width + clearOffset, canvas.height + clearOffset);
 
+  // movement check
   let hasMoved = false;
 
   if (isDirectionPressed(DIRECTIONS.UP)) {
@@ -109,9 +105,30 @@ function animation(){
   if(!hasMoved)
     currentLoopIndex = 0;
 
+  // drawing section
+  room.draw();
+  
   vendorAnimation();
 
+  // player movement
   player.draw(CYCLE_LOOP[currentLoopIndex]);
+
+  if(player.x >= canvas.width) {
+    room = new Room(ctx,  room.row, room.col + 1);
+    player.x -= CANVAS.WIDTH;
+  }
+  else if(player.x + player.scaledWidth <= 0) {
+    room = new Room(ctx,  room.row, room.col - 1);
+    player.x += CANVAS.WIDTH;
+  }
+  else if(player.y >= canvas.height ){
+    room = new Room(ctx,  room.row + 1, room.col);
+    player.y -= CANVAS.HEIGHT;
+  }
+  else if(player.y + player.scaledHeight <= 0) {
+    room = new Room(ctx,  room.row - 1, room.col);
+    player.y += CANVAS.HEIGHT;
+  } 
 
   window.requestAnimationFrame(animation);
 }
@@ -119,24 +136,24 @@ function animation(){
 function vendorAnimation(){
   let activeVendor;
 
-  vendors.forEach(vendor => {
-    vendor.draw()
+  room.vendors.forEach(vendor => {
     if(vendor.collides(player)){
       activeVendor = vendor;
       ctx.textAlign = 'center';
-      ctx.fillStyle = 'white';
-      ctx.font = "26px Comic Sans MS";
-      ctx.fillText("Press space to check the company's details", canvas.width/2, canvas.height/1.2);
+      ctx.fillStyle = 'black';
+      ctx.font = "28px Comic Sans MS";
+      ctx.fillText("Press space to check the company's details", canvas.width/2, canvas.height/2 + 10);
     }
   });
 
   if(activeVendor){
-    if(keyPresses[" "] && !tablet.isVisible()) {
-      tablet.load(activeVendor.company);
-      tablet.show();
+    if(keyPresses[" "] && !modal.isVisible()) {
+
+      modal.load(activeVendor.company);
+      modal.show();
     } 
     if(keyPresses["Escape"]) {
-      tablet.hide();
+      modal.hide();
     }
   }
 }
@@ -151,14 +168,8 @@ function setup(){
   canvas.width = CANVAS.WIDTH;
   canvas.height = CANVAS.HEIGHT;
 
-  player.setGender('male')
-
-  setupVendors();
+  player.setGender('male');
 }
 
-function setupVendors(){
-  companies.forEach(company => {
-    vendors.push(new Stand(company, ctx));
-  });
-}
+
 setup();

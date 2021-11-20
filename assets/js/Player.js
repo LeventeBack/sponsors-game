@@ -1,12 +1,13 @@
-import { CANVAS, vendors } from '../js/main.js'
+import { CANVAS,  room } from './main.js'
+
 
 export const PLAYER =  {
   WIDTH: 55,
   HEIGHT: 55,  
-  SPEED: 2.5,
+  SPEED: 3,
   SCALE: 1.5,
-  WIDTH_TOLERANCE: 0.6,
-  HEIGHT_TOLERANCE: 0.6,
+  WIDTH_TOLERANCE: 0.5,
+  HEIGHT_TOLERANCE: 0.5,
 } 
 
 export const DIRECTIONS = {
@@ -18,25 +19,37 @@ export const DIRECTIONS = {
 
 export default class Player {
   constructor(ctx){
-    this.img = new Image();
-    this.speed = PLAYER.SPEED;
-    this.height = PLAYER.HEIGHT;
-    this.scale = PLAYER.SCALE;
-    this.width = PLAYER.WIDTH;
-    this.direction = DIRECTIONS.DOWN;
     this.ctx = ctx;
     
-    this.x = CANVAS.WIDTH / 2 - PLAYER.WIDTH / 2;
-    this.y = CANVAS.HEIGHT / 2 - PLAYER.HEIGHT / 2; 
+    this.speed = PLAYER.SPEED;
+    this.height = PLAYER.HEIGHT;
+    this.width = PLAYER.WIDTH;
+    this.scale = PLAYER.SCALE;
+
+    this.scaledWidth = this.width * this.scale;
+    this.scaledHeight = this.height * this.scale;
+
+    this.direction = DIRECTIONS.DOWN;
+    
+    this.x = CANVAS.WIDTH / 2 - this.scaledWidth / 2;
+    this.y = CANVAS.HEIGHT / 2 - this.scaledHeight / 2; 
+    
+    this.img = new Image();
     
     this.ready = false;
   }
+
+  positionTo(x, y){
+    this.x = x != null ? x : this.x;
+    this.y = y != null ? y : this.y;
+  }
   
   draw(frame){
-    // this.ctx.fillRect(this.x, this.y, this.width * this.scale, this.height * this.scale);
-    this.ctx.drawImage(this.img,
+      // this.ctx.fillStyle = '#fff';
+      // this.ctx.fillRect(this.x, this.y, this.scaledWidth, this.scaledHeight);
+      this.ctx.drawImage(this.img,
       frame * this.width, this.direction * this.height, this.width, this.height,
-      this.x, this.y, this.width * this.scale, this.height * this.scale);
+      this.x, this.y, this.scaledWidth, this.scaledHeight);
   }
 
   move(deltaX, deltaY, direction){
@@ -51,9 +64,18 @@ export default class Player {
     const nextX = this.x + (deltaX * this.speed);
     const nextY = this.y + (deltaY * this.speed);
 
-    return nextX >= 0 && nextX < CANVAS.WIDTH - this.width * this.scale 
-        && nextY >= 0 && nextY < CANVAS.HEIGHT - this.height * this.scale
-        && !this.collides(nextX, nextY);
+    const isWall = !(nextX >= 0 && nextX < CANVAS.WIDTH - this.scaledWidth 
+      && nextY >= 0 && nextY < CANVAS.HEIGHT - this.scaledHeight);
+
+    const isDoor = room.isDoor(nextX, nextY, this.scaledWidth, this.scaledHeight);
+
+    const isVendor = this.collides(nextX, nextY);
+
+    if(isDoor) return true
+    if(isVendor) return false
+    if(isWall) return false 
+  
+    return true
    }
 
    setGender(gender){
@@ -65,14 +87,14 @@ export default class Player {
     }
 
     collides(nextX, nextY){
-      const widthTolerance = this.width * this.scale * PLAYER.WIDTH_TOLERANCE;
-      const heightTolerance = this.height * this.scale * PLAYER.HEIGHT_TOLERANCE;
+      const widthTolerance = this.scaledWidth * PLAYER.WIDTH_TOLERANCE;
+      const heightTolerance = this.scaledHeight * PLAYER.HEIGHT_TOLERANCE;
 
-      return vendors.some(vendor => {
-        return vendor.x < nextX + this.width * this.scale - widthTolerance
-            && vendor.x + vendor.width > nextX + widthTolerance
-            && vendor.y < nextY + this.height * this.scale  + heightTolerance
-            && vendor.y + vendor.height > nextY + heightTolerance;
-      })
+      return room.vendors.some(vendor => (
+        nextX + this.scaledWidth - widthTolerance > vendor.x && 
+        nextX + widthTolerance < vendor.x + vendor.width &&
+        nextY + this.scaledHeight - heightTolerance / 2 > vendor.y && 
+        nextY + heightTolerance < vendor.y + vendor.height
+      ));
     }
 }
