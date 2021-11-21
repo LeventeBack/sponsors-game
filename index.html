@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sponsors Game</title>
   <link rel="stylesheet" href="./assets/css/style.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
   
@@ -29,33 +30,44 @@
       </div>
     </div>
     <canvas id="canvas"></canvas>
+    <button data-fullscreen class="fullscreen-button"> <i class="material-icons"> &#xe5d0;</i></button>
 
-    <div class="modal-overlay">
-
-      <div class="modal ">
-        <header class="modal__header">  
-          <img src="" alt="" data-company="logo">
-        </header>
-        <main class="modal__content">
-          <h3 class="modal__title" data-company="name"></h3>
-          <div class="modal__column">
-            <div class="modal__description" data-company="description"></div>
-            <a class="modal__link" href="" data-company="pdf">Download pdf</a>
-          </div>
-          <div class="modal__column">
-            <div class="modal__video" data-company="video"></div>
-            <footer class="modal__footer">
-              <span>Du hast noch Fragen? Tritt dem Livechat bei und kläre sie direkt!</span>
-              <div>
-                <a data-company="" target="_blank" href="" class="modal__button">Mit XY sprenchen</a>
-                <a data-company="url" target="_blank" href="" class="modal__button">Zur Website von XY</a>
-              </div>
-            </footer>
-          </div>
-        </main>
+    <div class="controls">
+      <div class="rotate">
+        Rotate your phone and enter fullscreen mode
+        <img src="./assets/img/rotate.png" alt="">
       </div>
     </div>
+    
+    
+  </div>
 
+  <div class="modal-overlay">
+
+    <div class="modal ">
+      <header class="modal__header">  
+        <img src="" alt="" data-company="logo">
+      </header>
+      <main class="modal__content">
+        <h3 class="modal__title" data-company="name"></h3>
+        <div class="modal__column">
+          <div class="modal__description" data-company="description"></div>
+          <a class="modal__link" href="" data-company="pdf">Informaterial herunterladen</a>
+        </div>
+        <div class="modal__column">
+          <div class="modal__video" data-company="video"></div>
+          <footer class="modal__footer">
+            <span class="footer-text">Du hast noch Fragen? Tritt dem Live chat bei und kläre sie direkt!</span>
+            <div class="timetable" data-company="timetable"></div>
+
+            <div>
+              <a data-company="chat" target="_blank" href="" class="modal__button">Live-Chat beitreten</a>
+              <a data-company="url" target="_blank" href="" class="modal__button">Zur Website</a>
+            </div>
+          </footer>
+        </div>
+      </main>
+    </div>
   </div>
 
   <script src="./assets/js/main.js" type="module"></script>

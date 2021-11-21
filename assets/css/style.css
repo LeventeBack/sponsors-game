@@ -3,11 +3,20 @@
 *::before {
   box-sizing: border-box;
 }
+body {
+  margin: 0;
+}
 
+/* *********************************** */
+/* WRAPPER STYLES */
+/* *********************************** */
 .sponsors-game-wrapper {
   width: fit-content;
   position: relative;
   margin: 25px auto;
+
+  
+  font-family: "Comic Sans MS";
 
   display: flex;
   justify-content: center;
@@ -16,14 +25,21 @@
   user-select: none;
 }
 
-canvas {
+/* *********************************** */
+/* CANVAS STYLES */
+/* *********************************** */
+#canvas {
+  width: 100%;
   border: 1px solid black;
   background-image: url('../img/floor.png');
   background-size: 15px;
   background-position: center center;
+  overflow: hidden;
 }
 
-/* modal css */
+/* *********************************** */
+/* MODAL STYLES */
+/* *********************************** */
 .modal-overlay {  
   position: absolute;
   top: 0;
@@ -35,14 +51,14 @@ canvas {
   opacity: 0;
   --color-primary: #9b5efb;
 }
-.modal {
-  
+.modal {  
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 90%;
-  height: 90%;
-  max-width: 750px;
+  width: 95%;
+  height: 95%;
+  max-width: 800px;
+  max-height: 500px;
   
   display: grid;
   grid-template-rows: 18% 82%;
@@ -77,7 +93,8 @@ canvas {
   width: 100%;
 }
 .modal__header img {
-  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
 }
 .modal__title {
   letter-spacing: 1px;
@@ -92,6 +109,7 @@ canvas {
   grid-template-columns: 1fr 1fr;
   padding: 20px 15px 25px;
 }
+
 .modal__description {
   text-align: justify;
   font-size: 0.75rem;
@@ -106,14 +124,17 @@ canvas {
 }
 .modal__video {
   display: flex;
-  background-color: lightgray;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
 }
 
 .modal iframe {
-  width: 100%;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.7);
+  background-color: lightgray;
+  max-width: 100%;
+  max-height: 300px;
   aspect-ratio: 16/9;
 }
 .modal__link {
@@ -129,7 +150,7 @@ canvas {
 }
 .modal__button {
   display: block;
-  margin: 0 auto 10px;
+  margin: 10px auto 0;
   padding: 5px 20px;
   font-weight: bold;
   color: white;
@@ -145,32 +166,45 @@ canvas {
 
 .modal__footer {
   display: grid;
-  grid-gap: 10px;
+  grid-gap: 8px;
+  margin-top: 10px;
   grid-template-columns: 1fr 1fr;
   font-size: 0.8rem;
 }
+.footer-text {
+  grid-column: span 2;
+  width: 75%;
+  text-align: center;
+  max-width: 220px;
+  margin: 0 auto;
+}
+.timetable {
+  font-size: 0.7rem;
+  margin-right: auto;
+}
 
 /* width */
-.modal ::-webkit-scrollbar {
+.modal::-webkit-scrollbar {
   width: 10px;
 }
 
 /* Track */
-.modal ::-webkit-scrollbar-track {
+.modal::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: lightgray;
 }
 
 /* Handle */
-.modal ::-webkit-scrollbar-thumb {
+.modal::-webkit-scrollbar-thumb {
   background: var(--color-primary);
   border-radius: 10px;
 }
 
 /* Handle on hover */
-.modal ::-webkit-scrollbar-thumb:hover {
+.modal::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
+
 
 /* *********************************** */
 /* MENU STYLES */
@@ -240,14 +274,127 @@ canvas {
   height: 100px;
   padding: 10px 0;
   display: flex;
+  flex-flow: row wrap;
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
 }
 .menu__sponsors img {
-  max-width: 175px;
+  max-width: 170px;
   max-height: 100px;
+  width: 100%;  
+  margin: 3px;
 }
+
+/* *********************************** */
+/* MENU STYLES */
+/* *********************************** */
+.controls {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  z-index: 10;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.4rem;
+  display: none;
+  background-color: rgba(0,0, 0, .7);
+}
+.rotate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 10px;
+}
+.rotate img {
+  margin-top: 15px;
+  width: 150px;
+}
+.fullscreen-button {
+  display: none;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 50px; 
+  height: 50px;
+  background-color: #ffffff;
+  color: black;
+  border: 1px solid black;
+  justify-content: center;
+  align-items: center;
+}
+.fullscreen-button i {
+  font-size: 40px;
+}
+.mobile .fullscreen-button {
+  display: flex;
+}
+
+/* *********************************** */
+/* MEDIA QUERIES */
+/* *********************************** */
+@media screen and (max-width: 768px) {
+  .modal__content {
+    grid-template-columns: 3fr 4fr;
+  }
+  .modal__description {
+    text-align: justify;
+    font-size: 1rem;
+  }
+  .menu {
+    padding: 10px;
+  }
+  .menu__center {
+    padding: 10px;
+    min-width: 200px;
+  }
+  .menu h2, .menu h3 {
+    margin: 0;
+  }
+  .menu__button {
+    margin-top: 8px;
+  }
+}
+@media screen and (max-width: 576px){
+  .modal {
+    max-height: unset;
+    display: block;
+    overflow: auto;
+  }
+  .modal__title {
+    grid-column: auto;
+  }
+  .modal__content {
+    height: unset;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+  }
+  .modal__column {
+    padding: 0;
+    height: unset;
+    overflow-y: unset;
+  }
+}
+@media (orientation: portrait) and (max-width: 768px) {
+ .mobile .controls {
+   display: flex;
+ }
+}
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1024px) {
+  /* #canvas {
+    height: 100vh;
+    width: 100vw;
+  } */
+}
+
+
+/* HIDDEN UTILITY CLASS */
 .hidden {
   display: none;
 }

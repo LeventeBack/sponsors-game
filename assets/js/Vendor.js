@@ -34,8 +34,8 @@ const STAND = {
 export const VENDOR = {
   WIDTH: CHARACTER.WIDTH / 2 + STAND.WIDTH,
   HEIGHT: STAND.HEIGHT,
-  TOP_OFFSET: 50,
-  BOTTOM_OFFSET: 40,
+  TOP_OFFSET: 60,
+  BOTTOM_OFFSET: 50,
 }
 
 export default class Vendor {
@@ -63,13 +63,13 @@ export default class Vendor {
     this.standImg.src = STANDS_IMG_PATH + STANDS[this.data.stand];
     this.standImg.onerror = () => this.imgError(this.standImg)
 
-    // this.logoImg = new Image();
-    // this.logoImg.src = this.company.tablet.logo;
-    // this.logoImg.onerror = () => this.imgError(this.logoImg);
+    this.logoImg = new Image();
+    this.logoImg.src = this.company.logo;
+    this.logoImg.onerror = () => this.imgError(this.logoImg);
   }
 
   draw(){
-    // this.ctx.fillStyle = 'red';
+    this.ctx.fillStyle = 'red';
     // this.ctx.fillRect(this.x, this.y, this.width, this.height);
     
     // draw vendor
@@ -81,6 +81,15 @@ export default class Vendor {
     // draw stand
     this.ctx.drawImage(
       this.standImg, this.x + CHARACTER.WIDTH / 2, this.y, STAND.WIDTH, STAND.HEIGHT
+    );
+    
+    // draw logo
+  }
+  
+  drawLogo(){
+    const {width, height} = this.getCorrectImgSizes(this.logoImg, STAND.WIDTH * 6 / 5, STAND.HEIGHT * 3/5);
+    this.ctx.drawImage(this.logoImg,
+      this.x + CHARACTER.WIDTH / 2, this.y - STAND.HEIGHT / 20, width, height
     );
   }
 
@@ -107,6 +116,21 @@ export default class Vendor {
 //   ctx.fillStyle = '#fff';
 //   ctx.fill();
 // }
+
+  getCorrectImgSizes(img, boxWidth, boxHeight) {
+    const aspectRatio = img.width / img.height;
+
+    if(aspectRatio >= 1)
+      return {
+        width: boxWidth,
+        height: boxWidth / aspectRatio
+      } 
+
+    return {
+      width: boxHeight * aspectRatio,
+      height: boxHeight
+    }
+  }
 
   setPosition(x, y){
     this.x = x;

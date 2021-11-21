@@ -38,7 +38,7 @@ const MAP = [
   ],
   [
     { id: 4, doors: [5, 7], stands: {top: 4, bottom: 2} },
-    { id: 5, doors: [2, 4, 6, 8], stands: {top: 4, bottom: 2} },
+    { id: 5, doors: [2, 4, 6, 8], stands: {top: 4, bottom: 4} },
     { id: 6, doors: [3, 5], stands: {top: 2, bottom: 4} },
   ],
   [

@@ -113,6 +113,9 @@ function animation(){
   // player movement
   player.draw(CYCLE_LOOP[currentLoopIndex]);
 
+  // draw logos on vendors
+  room.vendors.forEach(vendor => vendor.drawLogo());
+
   if(player.x >= canvas.width) {
     room = new Room(ctx,  room.row, room.col + 1);
     player.x -= CANVAS.WIDTH;
@@ -143,7 +146,8 @@ function vendorAnimation(){
       ctx.fillStyle = 'black';
       ctx.font = "28px Comic Sans MS";
       ctx.fillText("Press space to check the company's details", canvas.width/2, canvas.height/2 + 10);
-    }
+    } 
+
   });
 
   if(activeVendor){
@@ -155,7 +159,9 @@ function vendorAnimation(){
     if(keyPresses["Escape"]) {
       modal.hide();
     }
-  }
+  } 
+  else if(modal.isVisible())
+  modal.hide();
 }
 
 function isDirectionPressed(direction) {
@@ -165,11 +171,22 @@ function isDirectionPressed(direction) {
 
 //  SETUP FUNCTIONS
 function setup(){
-  canvas.width = CANVAS.WIDTH;
-  canvas.height = CANVAS.HEIGHT;
-
+  setUpCanvas();
+  PLAYER.SCALE = CANVAS.HEIGHT / 7 / PLAYER.HEIGHT;
   player.setGender('male');
+
+  if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    document.querySelector('.sponsors-game-wrapper').classList.add('mobile');
+  }
 }
 
+function setUpCanvas(){
+  canvas.width = CANVAS.WIDTH;
+  canvas.height = CANVAS.HEIGHT;
+}
+
+document.querySelector('[data-fullscreen]').addEventListener('click', () => {
+  canvas.requestFullscreen();
+})
 
 setup();
