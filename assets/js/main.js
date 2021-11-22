@@ -3,6 +3,7 @@ import Player,  {DIRECTIONS, PLAYER}  from "./Player.js";
 import Modal  from "./Modal.js";
 import { companies } from "./data.js";
 import Room from "./Room.js";
+import { JoyStick } from "./Joystick.js";
 
 // GLOBAL CONSTANTS
 export const CANVAS = {
@@ -43,6 +44,12 @@ const modalClose = document.querySelector('[data-close]');
 const player = new Player(ctx);
 const modal = new Modal;
 export let room = new Room(ctx, 1, 1); 
+const joystick = new JoyStick({
+	radius: 60,
+	x: window.innerWidth * 3 / 4,
+	y: window.innerHeight * 3 / 4,
+	inner_radius: 50
+});
 
 // EVENT LISTENERS
 window.addEventListener('keydown', keyDownHandler);
