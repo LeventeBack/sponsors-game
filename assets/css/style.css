@@ -38,6 +38,8 @@ body {
   background-size: 15px;
   background-position: center center;
   overflow: hidden;
+
+  position: relative;
 }
 
 /* *********************************** */
@@ -364,6 +366,53 @@ body {
 }
 .mobile .joystick-wrapper {
   display: block;
+}
+
+/* *********************************** */
+/* SPEECH BUBBLE STYLES */
+/* *********************************** */
+.speech-bubble {
+  --y: 2;
+  --x: 7;
+
+  opacity: 0;
+  transform: translate(-13%, -60%);
+  position: absolute;
+  top: calc(var(--y) * 1%);
+  left: calc(var(--x) * 1%);
+  width: 22%;
+  height: 25%;
+  animation: show-up 1s ease-in-out 1s forwards;
+}
+.speech-bubble img {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  width: 100%;
+}
+.speech-text {
+  position: absolute;
+  top: 12%;
+  left: 10%;
+  width: 85%;
+  height: 80%;
+  font-size: calc(7px + .5vmin);
+  padding: 10px;
+  text-align: center;
+  border-radius: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+@keyframes show-up {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* *********************************** */

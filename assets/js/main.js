@@ -40,6 +40,7 @@ const gameMenu = document.querySelector('#menu')
 const gameWrapper =  document.querySelector('.sponsors-game-wrapper');
 const joystickWrapper = document.querySelector('.joystick-wrapper');
 const modalOverlay = document.querySelector(".modal-overlay");
+const speechContainer = document.querySelector('[data-speech="bubble"]');
 
 const players = document.querySelectorAll('[data-gender]');
 
@@ -173,10 +174,8 @@ function animation(){
   } 
   
   // draw speech bubble if there is an active vendor
-  if(activeVendor) 
-    setTimeout(() => {
-      if(activeVendor) activeVendor.drawSpeechBubble();
-    }, 1500);
+  if(activeVendor && activeVendor.speaks)
+      activeVendor.drawSpeechBubble();
 
   window.requestAnimationFrame(animation);
 }
@@ -186,7 +185,7 @@ function vendorAnimation(){
 
   room.vendors.forEach(vendor => {
     if(vendor.collides(player)){
-      activeVendor = vendor;
+      activeVendor = vendor; 
       ctx.textAlign = 'center';
       ctx.fillStyle = 'black';
       ctx.font = "25px manaspc";
@@ -200,10 +199,11 @@ function vendorAnimation(){
           "Press space to check the company's details", 
           canvas.width/2, canvas.height/2 + 10
         );
-    } 
+    }
   });
 
   if(activeVendor){
+    activeVendor.speak();
     if(keyPresses[" "]){
       keyPresses[" "] = false;
       if(!modal.isVisible())
@@ -214,6 +214,8 @@ function vendorAnimation(){
   } 
   else if(modal.isVisible()) 
     modal.hide();
+  else 
+    speechContainer.classList.add('hidden');
 }
 
 //  HELPER FUNCTIONS

@@ -1,4 +1,5 @@
 import { PLAYER } from "./Player.js";
+import { CANVAS } from "./main.js";
 
 const CHARACTER_IMG_PATH = '/assets/img/vendors/';
 const STANDS_IMG_PATH = '/assets/img/stands/';
@@ -40,6 +41,9 @@ export const VENDOR = {
 
 const speechBubbleImg = new Image();
 speechBubbleImg.src = '/assets/img/speech-bubble.png';
+
+const speechContainer = document.querySelector('[data-speech="bubble"]');
+const speechText = document.querySelector('[data-speech="text"]');
 
 export default class Vendor {
   constructor(ctx, company) {
@@ -100,45 +104,52 @@ export default class Vendor {
     );
   }
 
-  drawSpeechBubble(){
-    if(!this.data.speech) return;
+  // drawSpeechBubble(){
+  //   if(!this.data.speech) return;
 
-    this.ctx.drawImage(
-      speechBubbleImg, this.x + this.width / 4, this.y - this.height / 2,
-      VENDOR.WIDTH, VENDOR.HEIGHT
-    );
-    this.ctx.textAlign = 'center';
-    this.ctx.textBaseline = 'middle'
-    this.ctx.fillStyle = 'black';
-    this.ctx.font = "14px manaspc";
-    // this.ctx.fillRect(this.x + this.width / 3, this.y - this.height / 3 - 5, this.width * 6 / 7, this.height * 5 / 7);
-    const width = this.width * 6 / 7;
-    const height = this.height * 5 / 7;
-    //this.ctx.fillText(this.data.speech, this.x + this.width / 3 + width / 2, this.y - this.height / 3 + height / 2, width);
+  //   this.ctx.drawImage(
+  //     speechBubbleImg, this.x + this.width / 4, this.y - this.height / 2,
+  //     VENDOR.WIDTH, VENDOR.HEIGHT
+  //   );
+  //   this.ctx.textAlign = 'center';
+  //   this.ctx.textBaseline = 'middle'
+  //   this.ctx.fillStyle = 'black';
+  //   this.ctx.font = "14px manaspc";
+  //   // this.ctx.fillRect(this.x + this.width / 3, this.y - this.height / 3 - 5, this.width * 6 / 7, this.height * 5 / 7);
+  //   const width = this.width * 6 / 7;
+  //   const height = this.height * 5 / 7;
+  //   //this.ctx.fillText(this.data.speech, this.x + this.width / 3 + width / 2, this.y - this.height / 3 + height / 2, width);
 
 
-    function wrapText(context, text, x, y, maxWidth, lineHeight) {
-      var words = text.split(' ');
-      var line = '';
+  //   function wrapText(context, text, x, y, maxWidth, lineHeight) {
+  //     var words = text.split(' ');
+  //     var line = '';
   
-      for(var n = 0; n < words.length; n++) {
-        var testLine = line + words[n] + ' ';
-        var metrics = context.measureText(testLine);
-        var testWidth = metrics.width;
-        if (testWidth > maxWidth && n > 0) {
-          context.fillText(line, x, y);
-          line = words[n] + ' ';
-          y += lineHeight;
-        }
-        else {
-          line = testLine;
-        }
-      }
-      context.fillText(line, x, y);
-    }
+  //     for(var n = 0; n < words.length; n++) {
+  //       var testLine = line + words[n] + ' ';
+  //       var metrics = context.measureText(testLine);
+  //       var testWidth = metrics.width;
+  //       if (testWidth > maxWidth && n > 0) {
+  //         context.fillText(line, x, y);
+  //         line = words[n] + ' ';
+  //         y += lineHeight;
+  //       }
+  //       else {
+  //         line = testLine;
+  //       }
+  //     }
+  //     context.fillText(line, x, y);
+  //   }
   
-    wrapText(this.ctx, this.data.speech, this.x + this.width / 3 + width / 2, this.y - this.height / 4, width , 12);
+  //   wrapText(this.ctx, this.data.speech, this.x + this.width / 3 + width / 2, this.y - this.height / 4, width , 12);
 
+  // }
+
+  speak(){
+    speechText.innerHTML = this.data.speech;
+    speechContainer.classList.remove('hidden');
+    speechContainer.style.setProperty('--x', (this.x + this.width / 4) * 100 / CANVAS.WIDTH);
+    speechContainer.style.setProperty('--y', this.y  * 100 / CANVAS.HEIGHT);
   }
 
   getCorrectImgSizes(img, boxWidth, boxHeight) {
