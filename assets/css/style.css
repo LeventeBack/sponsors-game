@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'manaspc';
+  src: url('../fonts/manaspc.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 *,
 *::after,
 *::before {
@@ -16,7 +22,7 @@ body {
   margin: 25px auto;
 
   
-  font-family: "Comic Sans MS";
+  font-family: "manaspc";
 
   display: flex;
   justify-content: center;
@@ -251,9 +257,9 @@ body {
   align-items: center;
   flex-direction: column;
   background: #fff;
-  padding: 20px;
+  padding: 12px;
   border-radius: 10px;
-  min-width: 250px;
+  min-width: 230px;
 }
 .menu__center .player-container {
   display: flex;
@@ -281,19 +287,24 @@ body {
   background-image: url('../img/players/female.png');
 }
 .menu__sponsors {
-  height: 100px;
-  padding: 10px 0;
   display: flex;
-  flex-flow: row wrap;
+  /* grid-template-columns: repeat(5, 1fr); */
   justify-content: space-evenly;
+  flex-flow: row wrap;
   align-items: center;
   width: 100%;
+  grid-gap: 10px;
+  padding: 5px 0;
+  place-items: center;
 }
 .menu__sponsors img {
-  max-width: 170px;
-  max-height: 100px;
-  width: 100%;  
-  margin: 3px;
+  max-width: 200px;
+  border-radius: 5px;
+  max-height: 80px;
+}
+.menu__sponsors img.white-bg {
+  background-color: #fff;
+  padding: 2px;
 }
 
 /* *********************************** */
@@ -338,6 +349,7 @@ body {
   border: 1px solid black;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 }
 .fullscreen-button i {
   font-size: 40px;
@@ -383,14 +395,24 @@ body {
     padding: 10px;
   }
   .menu__center {
-    padding: 10px;
-    min-width: 200px;
+    padding: 5px;
+    min-width: 150px;
   }
-  .menu h2, .menu h3 {
+  .menu h2 {
+    font-size: 1.2rem;
     margin: 0;
+  } 
+  
+  .menu h3 {
+    margin: 5px 0;
+    font-size: 1rem;
   }
   .menu__button {
-    margin-top: 8px;
+    padding: 5px;
+    margin-top: 5px;
+  }
+  .menu__center .player {
+    --scale: 1.1;
   }
 }
 @media screen and (max-width: 576px){
@@ -417,8 +439,8 @@ body {
  .mobile .controls {
    display: flex;
  }
- .menu__sponsors {
-   display: none;
+ .sponsors-game-wrapper{
+   height: 70vh;
  }
 }
 

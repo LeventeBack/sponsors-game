@@ -9,14 +9,14 @@ const WALL = {
   SIDE: 2.5,
   BOTTOM: 2,
   SIZE: 10,
-  COLOR: "#eeb59c",
+  COLOR: "#565656",
 };
 
 const ARROW = {
   SIZE: 110,
   SCALED_SIZE: 60,
-  OFFSET_MAIN: 60,
-  OFFSET_SIDE: 100,
+  OFFSET_MAIN: 50,
+  OFFSET_SIDE: 60,
 }
 
 // const WINDOW = {
@@ -64,12 +64,6 @@ export default class Room {
 
     this.row = row;
     this.col = col;
-
-    this.wallImg = new Image();
-    this.wallImg.src = "assets/img/wall.png";
-
-    this.windowImg = new Image();
-    this.windowImg.src = "assets/img/window.png";
 
     this.arrowImg = new Image();
     this.arrowImg.src = "assets/img/arrows.png";

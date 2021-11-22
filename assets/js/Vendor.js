@@ -68,10 +68,7 @@ export default class Vendor {
     this.logoImg.onerror = () => this.imgError(this.logoImg);
   }
 
-  draw(){
-    this.ctx.fillStyle = 'red';
-    // this.ctx.fillRect(this.x, this.y, this.width, this.height);
-    
+  draw(){    
     // draw vendor
     this.ctx.drawImage(
       this.characterImg, this.x - CHARACTER.WIDTH / 4, this.y + this.height - CHARACTER.HEIGHT,
@@ -88,8 +85,16 @@ export default class Vendor {
   
   drawLogo(){
     const {width, height} = this.getCorrectImgSizes(this.logoImg, STAND.WIDTH * 6 / 5, STAND.HEIGHT * 3/5);
+
+    const topOffset =  (STAND.HEIGHT * 3 / 5 - height) / 2;
+    const sideOffset = (STAND.WIDTH * 6 / 5 - width) / 3;
+    
+    // white background for logo
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(this.x + CHARACTER.WIDTH / 3 + sideOffset, this.y - STAND.HEIGHT / 5 + topOffset, width, height);
+
     this.ctx.drawImage(this.logoImg,
-      this.x + CHARACTER.WIDTH / 2, this.y - STAND.HEIGHT / 20, width, height
+      this.x + CHARACTER.WIDTH / 3 + sideOffset, this.y - STAND.HEIGHT / 5 + topOffset, width, height
     );
   }
 
@@ -120,11 +125,11 @@ export default class Vendor {
   getCorrectImgSizes(img, boxWidth, boxHeight) {
     const aspectRatio = img.width / img.height;
 
-    if(aspectRatio >= 1)
+    if(aspectRatio > 1)
       return {
         width: boxWidth,
         height: boxWidth / aspectRatio
-      } 
+      }
 
     return {
       width: boxHeight * aspectRatio,

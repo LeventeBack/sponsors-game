@@ -208,7 +208,7 @@ export const companies = [
   {
     data: {
       name: "Technische Hochschule Deggendorf",
-      logo: "/assets/img/companies/Hochschule_Deggendorf_Logo.png",
+      logo: "/assets/img/companies/Thalia_logo_RGB_c_positive_raster.png",
       description: `<p>
         Die Technische Hochschule Deggendorf (THD) wurde 1994 gegründet und zählt zu den innovativen Vorreitern der bayerischen Hochschullandschaft. Sie ist Triebfeder der regionalen Wirtschaft in Ostbayern. An zahlreichen Forschungs- und Technologie Campus leben wir unser Konzept der Regionalisierung von Forschung. Industrie und Kommunen sind dabei unsere Partner. Gemeinsam gestalten wir den Transfer von Wissen und Technologie – nachhaltig und erfolgreich.
         Die acht Fakultäten und das Zentrum für Akademische Weiterbildung bieten knapp 70 verschiedene Bachelor- und Masterstudiengänge aus den Bereichen Wirtschaftswissenschaften, Ingenieurwissenschaften, Informatik, angewandte Naturwissenschaften sowie Gesundheitswissenschaften an. An der Fakultät European Campus Rottal-Inn (ECRI), werden international ausgerichtete Bachelor- und Masterstudiengänge in den Bereichen Gesundheitswissenschaften, Tourismus und Technik angeboten. Derzeit studieren rund 8000 junge Menschen an den Studienstandorten Deggendorf, Pfarrkirchen und Cham. Über 30 Prozent davon sind internationale Studierende.

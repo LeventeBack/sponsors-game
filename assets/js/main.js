@@ -85,11 +85,14 @@ modalClose.addEventListener('click', () => modal.hide());
 // EVENT HANDLER FUNCTIONS 
 function keyDownHandler(event) {
   keyPresses[event.key] = true;
-  if(event.key === "Escape" || event.key === "Space")
-    event.preventDefault();
 
-  if(modal.isVisible())
-    modal.hide();
+  if(event.key === " ") {
+    event.preventDefault();
+    
+    if(modal.isVisible())
+      modal.hide();
+
+  }
 }
 
 function keyUpHandler(event) {
@@ -128,8 +131,6 @@ function animation(){
 
   if(isMobile)
     joystickPosition = joystick.getPosition();
-
-  console.log(joystickPosition)
 
   // movement check
   let hasMoved = false;
@@ -199,7 +200,7 @@ function vendorAnimation(){
       activeVendor = vendor;
       ctx.textAlign = 'center';
       ctx.fillStyle = 'black';
-      ctx.font = "28px Comic Sans MS";
+      ctx.font = "25px manaspc";
       if(isMobile)
         ctx.fillText("Double tap to see the company's details", canvas.width/2, canvas.height/2 + 10);
       else 
@@ -214,10 +215,9 @@ function vendorAnimation(){
         modal.load(activeVendor.company);
         modal.show();
       } 
+      else
+        modal.hide();
     }
-    // if(keyPresses["Escape"]) {
-    //   modal.hide();
-    // }
   } 
   else if(modal.isVisible())
     modal.hide();
