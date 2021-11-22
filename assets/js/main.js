@@ -3,7 +3,7 @@ import Player,  {DIRECTIONS, PLAYER}  from "./Player.js";
 import Modal  from "./Modal.js";
 import { companies } from "./data.js";
 import Room from "./Room.js";
-import { createJoystick } from "./Joystick.js";
+import { createJoystick, JOYSTICK_TOLERANCE } from "./Joystick.js";
 
 // GLOBAL CONSTANTS
 export const CANVAS = {
@@ -124,23 +124,29 @@ function animation(){
   ctx.stroke();
 
   // mobile movement
-  let joystickPosition = joystick.getPosition() || {x: 0, y: 0};
+  let joystickPosition = {x: 0, y: 0};
+
+  if(isMobile)
+    joystickPosition = joystick.getPosition();
+
+  console.log(joystickPosition)
 
   // movement check
   let hasMoved = false;
+  
 
-  if (isDirectionPressed(DIRECTIONS.UP) || joystickPosition.y < 0) {
+  if (isDirectionPressed(DIRECTIONS.UP) || joystickPosition.y < -JOYSTICK_TOLERANCE) {
     player.move(0, -1, DIRECTIONS.UP);
     hasMoved = true;
-  } else if (isDirectionPressed(DIRECTIONS.DOWN) || joystickPosition.y > 0) {
+  } else if (isDirectionPressed(DIRECTIONS.DOWN) || joystickPosition.y > JOYSTICK_TOLERANCE) {
     player.move(0, 1, DIRECTIONS.DOWN);
     hasMoved = true;
   }
 
-  if (isDirectionPressed(DIRECTIONS.LEFT) || joystickPosition.x < 0) {
+  if (isDirectionPressed(DIRECTIONS.LEFT) || joystickPosition.x < -JOYSTICK_TOLERANCE) {
     player.move(-1, 0, DIRECTIONS.LEFT);
     hasMoved = true;
-  } else if (isDirectionPressed(DIRECTIONS.RIGHT) || joystickPosition.x > 0) {
+  } else if (isDirectionPressed(DIRECTIONS.RIGHT) || joystickPosition.x > JOYSTICK_TOLERANCE) {
     player.move(1, 0, DIRECTIONS.RIGHT);
     hasMoved = true;
   }

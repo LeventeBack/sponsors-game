@@ -1,4 +1,4 @@
-
+export const JOYSTICK_TOLERANCE = 20;
 export function createJoystick(parent) {
   const maxDiff = 100;
   const stick = document.createElement('div');
