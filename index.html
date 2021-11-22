@@ -25,8 +25,6 @@
         <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
         <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
         <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
-        <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
-        <img src="./assets/img/companies/Hochschule_Deggendorf_Logo.png" alt="">
       </div>
     </div>
     <canvas id="canvas"></canvas>
@@ -37,39 +35,38 @@
         Rotate your phone and enter fullscreen mode
         <img src="./assets/img/rotate.png" alt="">
       </div>
+    </div>  
+
+    <div class="modal-overlay">
+
+      <div class="modal ">
+        <header class="modal__header">  
+          <img src="" alt="" data-company="logo">
+          <span class="modal__close" data-close><img src="./assets/img/close.svg" alt=""></span>
+        </header>
+        <main class="modal__content">
+          <h3 class="modal__title" data-company="name"></h3>
+          <div class="modal__column">
+            <div class="modal__description" data-company="description"></div>
+            <a class="modal__link" href="" data-company="pdf">Informaterial herunterladen</a>
+          </div>
+          <div class="modal__column">
+            <div class="modal__video" data-company="video"></div>
+            <footer class="modal__footer">
+              <span class="footer-text">Du hast noch Fragen? Tritt dem Live chat bei und kläre sie direkt!</span>
+              <div class="timetable" data-company="timetable"></div>
+
+              <div>
+                <a data-company="chat" target="_blank" href="" class="modal__button">Live-Chat beitreten</a>
+                <a data-company="url" target="_blank" href="" class="modal__button">Zur Website</a>
+              </div>
+            </footer>
+          </div>
+        </main>
+      </div>
     </div>
-    
-    
+      
   </div>
-
-  <div class="modal-overlay">
-
-    <div class="modal ">
-      <header class="modal__header">  
-        <img src="" alt="" data-company="logo">
-      </header>
-      <main class="modal__content">
-        <h3 class="modal__title" data-company="name"></h3>
-        <div class="modal__column">
-          <div class="modal__description" data-company="description"></div>
-          <a class="modal__link" href="" data-company="pdf">Informaterial herunterladen</a>
-        </div>
-        <div class="modal__column">
-          <div class="modal__video" data-company="video"></div>
-          <footer class="modal__footer">
-            <span class="footer-text">Du hast noch Fragen? Tritt dem Live chat bei und kläre sie direkt!</span>
-            <div class="timetable" data-company="timetable"></div>
-
-            <div>
-              <a data-company="chat" target="_blank" href="" class="modal__button">Live-Chat beitreten</a>
-              <a data-company="url" target="_blank" href="" class="modal__button">Zur Website</a>
-            </div>
-          </footer>
-        </div>
-      </main>
-    </div>
-  </div>
-
   <script src="./assets/js/main.js" type="module"></script>
 
 </body>

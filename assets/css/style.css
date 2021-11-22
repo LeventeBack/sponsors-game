@@ -29,7 +29,8 @@ body {
 /* CANVAS STYLES */
 /* *********************************** */
 #canvas {
-  width: 100%;
+  max-width: 100%;
+  height: 100%;
   border: 1px solid black;
   background-image: url('../img/floor.png');
   background-size: 15px;
@@ -91,10 +92,19 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
+  position:  relative;
 }
 .modal__header img {
   max-height: 100%;
   max-width: 100%;
+}
+.modal__close {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+  padding: 10px;
+  cursor: pointer;
 }
 .modal__title {
   letter-spacing: 1px;
@@ -293,7 +303,7 @@ body {
   position: absolute;
   height: 100%;
   width: 100%;
-  color: white;
+  color: black;
   text-align: center;
   font-weight: bold;
   z-index: 10;
@@ -302,7 +312,7 @@ body {
   align-items: center;
   font-size: 1.4rem;
   display: none;
-  background-color: rgba(0,0, 0, .7);
+  background-color: rgb(110, 124, 155);
 }
 .rotate {
   display: flex;
@@ -314,10 +324,10 @@ body {
 }
 .rotate img {
   margin-top: 15px;
-  width: 150px;
+  width: 70px;
 }
 .fullscreen-button {
-  display: none;
+  display: flex;
   position: absolute;
   top: 5px;
   left: 5px;
@@ -332,17 +342,11 @@ body {
 .fullscreen-button i {
   font-size: 40px;
 }
-.mobile .fullscreen-button {
-  display: flex;
-}
 
 /* *********************************** */
 /* MEDIA QUERIES */
 /* *********************************** */
 @media screen and (max-width: 768px) {
-  .modal__content {
-    grid-template-columns: 3fr 4fr;
-  }
   .modal__description {
     text-align: justify;
     font-size: 1rem;
@@ -385,14 +389,10 @@ body {
  .mobile .controls {
    display: flex;
  }
+ .menu__sponsors {
+   display: none;
+ }
 }
-@media (orientation: landscape) and (min-width: 768px) and (max-width: 1024px) {
-  /* #canvas {
-    height: 100vh;
-    width: 100vw;
-  } */
-}
-
 
 /* HIDDEN UTILITY CLASS */
 .hidden {
