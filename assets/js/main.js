@@ -1,7 +1,6 @@
 // MODULE IMPORTS
 import Player,  {DIRECTIONS, PLAYER}  from "./Player.js";
 import Modal  from "./Modal.js";
-import { companies } from "./data.js";
 import Room from "./Room.js";
 import { createJoystick, JOYSTICK_TOLERANCE } from "./Joystick.js";
 
@@ -28,29 +27,36 @@ let currentLoopIndex = 0;
 let isMobile = false;
 let tapped;
 let activeVendor;
-let isFullScreen = false;
 
 // HTML SELECTORS
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const players = document.querySelectorAll('[data-gender]');
+
 const startButton = document.querySelector('[data-button="start"]');
+const closeButton = document.querySelector('[data-close]');
+const fullscreenButton = document.querySelector('[data-fullscreen]');
+
 const gameMenu = document.querySelector('#menu')
 const gameWrapper =  document.querySelector('.sponsors-game-wrapper');
-const fullscreenButton = document.querySelector('[data-fullscreen]');
-const modalClose = document.querySelector('[data-close]');
 const joystickWrapper = document.querySelector('.joystick-wrapper');
+const modalOverlay = document.querySelector(".modal-overlay");
+
+const players = document.querySelectorAll('[data-gender]');
 
 // CLASS INSTANCES
 const player = new Player(ctx);
-const modal = new Modal;
+const modal = new Modal(modalOverlay);
 export let room = new Room(ctx, 1, 1);
+
 const joystick = createJoystick(joystickWrapper);
 
 // EVENT LISTENERS
 window.addEventListener('keydown', keyDownHandler);
 window.addEventListener('keyup', keyUpHandler);
 
+startButton.addEventListener('click', startGame);
+
+closeButton.addEventListener('click', () => modal.hide());
 
 fullscreenButton.addEventListener('click', () => {
   if(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement)
@@ -58,11 +64,9 @@ fullscreenButton.addEventListener('click', () => {
   else
     openFullscreen(gameWrapper);
   fullscreenButton.blur()
-})
+});
 
 players.forEach(player => player.addEventListener('click', () => selectPlayer(player)));
-
-startButton.addEventListener('click', startGame)
 
 canvas.addEventListener("touchstart", (e) => {
   if (!tapped)
@@ -70,33 +74,18 @@ canvas.addEventListener("touchstart", (e) => {
   else {
     clearTimeout(tapped); //stop single tap callback
     tapped = null
-    if(activeVendor && !modal.isVisible()){
-      modal.load(activeVendor.company);
-      modal.show();
-    }
+    if(activeVendor && !modal.isVisible())
+      showModal();
   }
 });
-
-// canvas.addEventListener('touchmove', touchHandler);
-//canvas.addEventListener('touchend', () => keyPresses = {})
-
-modalClose.addEventListener('click', () => modal.hide());
 
 // EVENT HANDLER FUNCTIONS 
 function keyDownHandler(event) {
   keyPresses[event.key] = true;
-
-  if(event.key === " ") {
-    event.preventDefault();
-    
-    if(modal.isVisible())
-      modal.hide();
-
-  }
 }
 
 function keyUpHandler(event) {
-    keyPresses[event.key] = false;
+  keyPresses[event.key] = false;
 }
 
 function selectPlayer(playerElement){
@@ -121,20 +110,12 @@ function animation(){
   const clearOffset = 100
   ctx.clearRect(-clearOffset, -clearOffset, canvas.width + clearOffset, canvas.height + clearOffset);
 
-  ctx.strokeStyle  = 'red';
-  ctx.beginPath();
-  ctx.rect(-1, -1, CANVAS.WIDTH + 2, CANVAS.HEIGHT + 2);
-  ctx.stroke();
-
   // mobile movement
   let joystickPosition = {x: 0, y: 0};
-
-  if(isMobile)
-    joystickPosition = joystick.getPosition();
+  if(isMobile) joystickPosition = joystick.getPosition();
 
   // movement check
   let hasMoved = false;
-  
 
   if (isDirectionPressed(DIRECTIONS.UP) || joystickPosition.y < -JOYSTICK_TOLERANCE) {
     player.move(0, -1, DIRECTIONS.UP);
@@ -164,6 +145,7 @@ function animation(){
   // drawing section
   room.draw();
   
+  // vendor collision detection
   vendorAnimation();
 
   // player movement
@@ -172,6 +154,7 @@ function animation(){
   // draw logos on vendors
   room.vendors.forEach(vendor => vendor.drawLogo());
 
+  // move player if user is controlling it
   if(player.x >= canvas.width) {
     room = new Room(ctx,  room.row, room.col + 1);
     player.x -= CANVAS.WIDTH;
@@ -188,6 +171,12 @@ function animation(){
     room = new Room(ctx,  room.row - 1, room.col);
     player.y += CANVAS.HEIGHT;
   } 
+  
+  // draw speech bubble if there is an active vendor
+  if(activeVendor) 
+    setTimeout(() => {
+      if(activeVendor) activeVendor.drawSpeechBubble();
+    }, 1500);
 
   window.requestAnimationFrame(animation);
 }
@@ -202,33 +191,71 @@ function vendorAnimation(){
       ctx.fillStyle = 'black';
       ctx.font = "25px manaspc";
       if(isMobile)
-        ctx.fillText("Double tap to see the company's details", canvas.width/2, canvas.height/2 + 10);
+        ctx.fillText(
+          "Double tap to see the company's details", 
+          canvas.width/2, canvas.height/2 + 10
+        );
       else 
-        ctx.fillText("Press space to check the company's details", canvas.width/2, canvas.height/2 + 10);
+        ctx.fillText(
+          "Press space to check the company's details", 
+          canvas.width/2, canvas.height/2 + 10
+        );
     } 
   });
 
   if(activeVendor){
     if(keyPresses[" "]){
       keyPresses[" "] = false;
-      if(!modal.isVisible()) {
-        modal.load(activeVendor.company);
-        modal.show();
-      } 
+      if(!modal.isVisible())
+        showModal();
       else
         modal.hide();
     }
   } 
-  else if(modal.isVisible())
+  else if(modal.isVisible()) 
     modal.hide();
+}
+
+//  HELPER FUNCTIONS
+function showModal(){
+  modal.load(activeVendor.company);
+  modal.show();
+  setTimeout(() => {
+    modalOverlay.addEventListener('click', hideModal)
+  }, 2000);
+}
+
+function hideModal(e){
+  if(modal.isVisible() && e.target == modal.container){
+    modalOverlay.removeEventListener('click', hideModal)
+    modal.hide();
+  }
 }
 
 function isDirectionPressed(direction) {
   return KEYS[direction].some(key => keyPresses[key]);
 }
 
+function openFullscreen(elem) {
+  if (elem.requestFullscreen)
+  elem.requestFullscreen();
+  else if (elem.webkitRequestFullscreen) /* Safari */
+  elem.webkitRequestFullscreen();
+  else if (elem.msRequestFullscreen) /* IE11 */
+  elem.msRequestFullscreen();
+}
 
-//  SETUP FUNCTIONS
+function closeFullscreen() {
+  if (document.exitFullscreen)
+  document.exitFullscreen();
+  else if (document.webkitExitFullscreen) /* Safari */
+  document.webkitExitFullscreen();
+  else if (document.msExitFullscreen) /* IE11 */
+  document.msExitFullscreen()
+}
+
+
+//  SETUP FUNCTION
 function setup(){
   canvas.width = CANVAS.WIDTH;
   canvas.height = CANVAS.HEIGHT;
@@ -240,24 +267,5 @@ function setup(){
     gameWrapper.classList.add('mobile');
   }
 }
-
-function openFullscreen(elem) {
-  if (elem.requestFullscreen)
-    elem.requestFullscreen();
-  else if (elem.webkitRequestFullscreen) /* Safari */
-    elem.webkitRequestFullscreen();
-  else if (elem.msRequestFullscreen) /* IE11 */
-    elem.msRequestFullscreen();
-}
-
-function closeFullscreen() {
-  if (document.exitFullscreen)
-    document.exitFullscreen();
-  else if (document.webkitExitFullscreen) /* Safari */
-    document.webkitExitFullscreen();
-  else if (document.msExitFullscreen) /* IE11 */
-    document.msExitFullscreen()
-}
-
 
 setup();

@@ -20,14 +20,10 @@ body {
   width: fit-content;
   position: relative;
   margin: 25px auto;
-
-  
   font-family: "manaspc";
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   user-select: none;
 }
 
@@ -78,7 +74,6 @@ body {
   z-index: 5;
   transform: translate(-50%, -50%) scale(0);
   transition: all 0.5s;
-
 }
 
 .modal-overlay.active {
@@ -89,8 +84,6 @@ body {
 .modal-overlay.active .modal {
   transform: translate(-50%, -50%) scale(1);
 }
-
-/* The  (or content) of the device */
 .modal__header {
   background-color: var(--color-primary);
   padding: 10px 25px;
@@ -125,7 +118,6 @@ body {
   grid-template-columns: 1fr 1fr;
   padding: 20px 15px 25px;
 }
-
 .modal__description {
   text-align: justify;
   font-size: 0.75rem;
@@ -143,7 +135,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 .modal iframe {
   overflow: hidden;
   border-radius: 15px;
@@ -179,7 +170,6 @@ body {
   cursor: pointer;
   font-size: 12px;
 }
-
 .modal__footer {
   display: grid;
   grid-gap: 8px;
@@ -198,29 +188,20 @@ body {
   font-size: 0.7rem;
   margin-right: auto;
 }
-
-/* width */
 .modal::-webkit-scrollbar {
   width: 10px;
 }
-
-/* Track */
 .modal::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: lightgray;
 }
-
-/* Handle */
 .modal::-webkit-scrollbar-thumb {
   background: var(--color-primary);
   border-radius: 10px;
 }
-
-/* Handle on hover */
 .modal::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
-
 
 /* *********************************** */
 /* MENU STYLES */
@@ -240,6 +221,9 @@ body {
   padding: 50px 15px 15px;
   width: 100%;
 }
+.menu h2 {
+  margin: 0
+}
 .menu__button {
   background-color: #50d752;
   border: none;
@@ -247,7 +231,7 @@ body {
   text-align: center;
   width: 75%;
   color: #fff;
-  margin-top: 15px;
+  margin-top: 10px;
   border-radius: 10px;
   cursor: pointer;
 }
@@ -288,7 +272,6 @@ body {
 }
 .menu__sponsors {
   display: flex;
-  /* grid-template-columns: repeat(5, 1fr); */
   justify-content: space-evenly;
   flex-flow: row wrap;
   align-items: center;
@@ -298,9 +281,9 @@ body {
   place-items: center;
 }
 .menu__sponsors img {
-  max-width: 200px;
+  max-width: 190px;
   border-radius: 5px;
-  max-height: 80px;
+  max-height: 75px;
 }
 .menu__sponsors img.white-bg {
   background-color: #fff;
@@ -439,8 +422,8 @@ body {
  .mobile .controls {
    display: flex;
  }
- .sponsors-game-wrapper{
-   height: 70vh;
+ .mobile.sponsors-game-wrapper{
+   height: 60vh;
  }
 }
 

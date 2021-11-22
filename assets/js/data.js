@@ -229,7 +229,7 @@ export const companies = [
       character: "lab",
       position: 7,
       stand: 3,
-      speech: "Lessgoo",
+      speech: "This is a longer text so I can test out weather is working ",
     },
   },
 ];

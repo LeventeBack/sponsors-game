@@ -1,11 +1,6 @@
 export default class Modal {
-  constructor(){
-    this.container = document.querySelector(".modal-overlay");
-
-    this.container.addEventListener('click', e => {
-      if(this.isVisible() && e.target == this.container)
-        this.hide();
-    })
+  constructor(container){
+    this.container = container;
   }
 
   load(company){

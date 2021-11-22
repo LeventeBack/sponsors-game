@@ -19,17 +19,10 @@ const ARROW = {
   OFFSET_SIDE: 60,
 }
 
-// const WINDOW = {
-//   NUMBER: 4,
-//   SIZE: 30,
-// };
-
-
 // MAP STRUCTURE 
 // 1 2 3 
 // 4 5 6
 // 7 8 9
-
 const MAP = [
   [
     { id: 1, doors: [2], stands: {top: 4, bottom: 4} },
@@ -153,10 +146,10 @@ export default class Room {
 
   setVendorPositions(){
     let vendorIndex = 0;
-    
     let {top, bottom} = this.positions;
     const roomWidth = CANVAS.WIDTH - WALL.SIZE * WALL.SIDE * 2;
     
+    // set top vendors
     const isTopDoor = this.arrows.includes(DIRECTIONS.UP)? 1 : 0;
     top += isTopDoor;
     const topDistanceBetween = (roomWidth - top * VENDOR.WIDTH)  / (top + 1);
@@ -171,6 +164,7 @@ export default class Room {
       this.vendors[vendorIndex++].setPosition(x, y);
     }
     
+    // set bottom vendors
     const isBottomDoor = this.arrows.includes(DIRECTIONS.DOWN)? 1 : 0;
     bottom += isBottomDoor;
 
@@ -185,6 +179,7 @@ export default class Room {
       this.vendors[vendorIndex++].setPosition(x, y);
     }
 
+    // if there are more vendors throw error and render them outside the canvas
     if(this.vendors.length > vendorIndex) {
       console.error(`There are more vendors set in room with ID:${this.id}, ${this.vendors.length} instead of ${this.positions.bottom + this.positions.top}`);
       for(let i = vendorIndex; i < this.vendors.length; i++)

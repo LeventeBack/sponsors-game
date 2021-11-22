@@ -38,6 +38,9 @@ export const VENDOR = {
   BOTTOM_OFFSET: 50,
 }
 
+const speechBubbleImg = new Image();
+speechBubbleImg.src = '/assets/img/speech-bubble.png';
+
 export default class Vendor {
   constructor(ctx, company) {
     this.company = company.data;
@@ -79,8 +82,6 @@ export default class Vendor {
     this.ctx.drawImage(
       this.standImg, this.x + CHARACTER.WIDTH / 2, this.y, STAND.WIDTH, STAND.HEIGHT
     );
-    
-    // draw logo
   }
   
   drawLogo(){
@@ -93,34 +94,52 @@ export default class Vendor {
     this.ctx.fillStyle = 'white';
     this.ctx.fillRect(this.x + CHARACTER.WIDTH / 3 + sideOffset, this.y - STAND.HEIGHT / 5 + topOffset, width, height);
 
+    // draw logo
     this.ctx.drawImage(this.logoImg,
       this.x + CHARACTER.WIDTH / 3 + sideOffset, this.y - STAND.HEIGHT / 5 + topOffset, width, height
     );
   }
 
-//   drawBubble(ctx, x, y, w, h, radius)
-// {
-//   let t = y - h; 
-//   var r = x + w;
-//   var b = y + h;
-//   ctx.beginPath();
-//   ctx.strokeStyle="black";
-//   ctx.lineWidth="2";
-//   ctx.moveTo(x+radius, y);
-//   ctx.lineTo(x+radius/2, y+10);
-//   ctx.lineTo(x+radius * 2, y);
-//   ctx.lineTo(r-radius, y);
-//   ctx.quadraticCurveTo(r, y, r, y-radius);
-//   ctx.lineTo(r, y-h+radius);
-//   ctx.quadraticCurveTo(r, y - h, r - radius, y - h);
-//   ctx.lineTo(x+radius, t);
-//   ctx.quadraticCurveTo(x, t, x, t+radius);
-//   ctx.lineTo(x, y-radius);
-//   ctx.quadraticCurveTo(x, y, x+radius, y);
-//   ctx.stroke();
-//   ctx.fillStyle = '#fff';
-//   ctx.fill();
-// }
+  drawSpeechBubble(){
+    if(!this.data.speech) return;
+
+    this.ctx.drawImage(
+      speechBubbleImg, this.x + this.width / 4, this.y - this.height / 2,
+      VENDOR.WIDTH, VENDOR.HEIGHT
+    );
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'middle'
+    this.ctx.fillStyle = 'black';
+    this.ctx.font = "14px manaspc";
+    // this.ctx.fillRect(this.x + this.width / 3, this.y - this.height / 3 - 5, this.width * 6 / 7, this.height * 5 / 7);
+    const width = this.width * 6 / 7;
+    const height = this.height * 5 / 7;
+    //this.ctx.fillText(this.data.speech, this.x + this.width / 3 + width / 2, this.y - this.height / 3 + height / 2, width);
+
+
+    function wrapText(context, text, x, y, maxWidth, lineHeight) {
+      var words = text.split(' ');
+      var line = '';
+  
+      for(var n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
+        var metrics = context.measureText(testLine);
+        var testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+          context.fillText(line, x, y);
+          line = words[n] + ' ';
+          y += lineHeight;
+        }
+        else {
+          line = testLine;
+        }
+      }
+      context.fillText(line, x, y);
+    }
+  
+    wrapText(this.ctx, this.data.speech, this.x + this.width / 3 + width / 2, this.y - this.height / 4, width , 12);
+
+  }
 
   getCorrectImgSizes(img, boxWidth, boxHeight) {
     const aspectRatio = img.width / img.height;
@@ -155,3 +174,6 @@ export default class Vendor {
   }
 
 }
+ 
+  
+  

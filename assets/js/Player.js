@@ -1,6 +1,5 @@
 import { CANVAS,  room } from './main.js'
 
-
 export const PLAYER =  {
   WIDTH: 55,
   HEIGHT: 55,  
@@ -45,8 +44,6 @@ export default class Player {
   }
   
   draw(frame){
-      // this.ctx.fillStyle = '#fff';
-      // this.ctx.fillRect(this.x, this.y, this.scaledWidth, this.scaledHeight);
       this.ctx.drawImage(this.img,
       frame * this.width, this.direction * this.height, this.width, this.height,
       this.x, this.y, this.scaledWidth, this.scaledHeight);
