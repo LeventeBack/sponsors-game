@@ -72,7 +72,6 @@ canvas.addEventListener("touchstart", (e) => {
       modal.show();
     }
   }
-  e.preventDefault()
 });
 
 canvas.addEventListener('touchmove', touchHandler);
