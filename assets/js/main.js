@@ -76,7 +76,7 @@ canvas.addEventListener("touchstart", (e) => {
 });
 
 canvas.addEventListener('touchmove', touchHandler);
-canvas.addEventListener('touchend', () => keyPresses = {})
+//canvas.addEventListener('touchend', () => keyPresses = {})
 
 modalClose.addEventListener('click', () => modal.hide());
 
@@ -240,25 +240,21 @@ function setup(){
 }
 
 function openFullscreen(elem) {
-  if (elem.requestFullscreen) {
+  if (elem.requestFullscreen)
     elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) { /* Safari */
+  else if (elem.webkitRequestFullscreen) /* Safari */
     elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE11 */
+  else if (elem.msRequestFullscreen) /* IE11 */
     elem.msRequestFullscreen();
-  }
-  isFullScreen = true;
 }
 
 function closeFullscreen() {
-  if (document.exitFullscreen) {
+  if (document.exitFullscreen)
     document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) { /* Safari */
+  else if (document.webkitExitFullscreen) /* Safari */
     document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) { /* IE11 */
-    document.msExitFullscreen();
-  }
-  isFullScreen = false;
+  else if (document.msExitFullscreen) /* IE11 */
+    document.msExitFullscreen()
 }
 
 
