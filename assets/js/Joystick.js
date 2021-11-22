@@ -1,212 +1,62 @@
-var JOYSTICK_DIV = null;
-let div_style = null;
 
-function __init_joystick_div() {
-  JOYSTICK_DIV = document.createElement("div");
-  div_style = JOYSTICK_DIV.style;
-  div_style.background = "rgba(255,255,255,0)";
-  div_style.position = "absolute";
-  div_style.top = "0px";
-  div_style.bottom = "0px";
-  div_style.left = "0px";
-  div_style.right = "0px";
-  div_style.margin = "0px";
-  div_style.padding = "0px";
-  div_style.borderWidth = "0px";
-  div_style.position = "absolute";
-  div_style.overflow = "hidden";
-  div_style.zIndex = "10000";
-  document.querySelector('.sponsors-game-wrapper').appendChild(JOYSTICK_DIV);
-}
-export class JoyStick {
-	constructor(attrs) {
-		this.radius = attrs.radius || 50;
-		this.inner_radius = attrs.inner_radius || this.radius / 2;
-		this.x = attrs.x || 0;
-		this.y = attrs.y || 0;
-		this.mouse_support = attrs.mouse_support || true;
+export function createJoystick(parent) {
+  const maxDiff = 100;
+  const stick = document.createElement('div');
+  stick.classList.add('joystick');
 
-		if (attrs.visible === undefined) {
-			attrs.visible = true;
-		}
+  stick.addEventListener('mousedown', handleMouseDown);
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('mouseup', handleMouseUp);
+  stick.addEventListener('touchstart', handleMouseDown);
+  document.addEventListener('touchmove', handleMouseMove);
+  document.addEventListener('touchend', handleMouseUp);
 
-		if (attrs.visible) {
-			this.__create_fullscreen_div();
-		}
-	}
-	__is_up(dx, dy) {
-		if (dy >= 0) {
-			return false;
-		}
-		if (Math.abs(dx) > 2 * Math.abs(dy)) {
-			return false;
-		}
-		return true;
-	}
-	__is_down(dx, dy) {
-		if (dy <= 0) {
-			return false;
-		}
-		if (Math.abs(dx) > 2 * Math.abs(dy)) {
-			return false;
-		}
-		return true;
-	}
-	__is_left(dx, dy) {
-		if (dx >= 0) {
-			return false;
-		}
-		if (Math.abs(dy) > 2 * Math.abs(dx)) {
-			return false;
-		}
-		return true;
-	}
-	__is_right(dx, dy) {
-		if (dx <= 0) {
-			return false;
-		}
-		if (Math.abs(dy) > 2 * Math.abs(dx)) {
-			return false;
-		}
-		return true;
-	}
-	__create_fullscreen_div() {
-		if (JOYSTICK_DIV === null) {
-			__init_joystick_div();
-		}
-		this.div = JOYSTICK_DIV;
-		///////////////////////////////////////////
-		this.base = document.createElement("span");
-		div_style = this.base.style;
-		div_style.width = this.radius * 2 + "px";
-		div_style.height = this.radius * 2 + "px";
-		div_style.position = "absolute";
-		div_style.top = this.y - this.radius + "px";
-		div_style.left = this.x - this.radius + "px";
-		div_style.borderRadius = "50%";
-		div_style.borderColor = "rgba(200,200,200,0.5)";
-		div_style.borderWidth = "1px";
-		div_style.borderStyle = "solid";
-		this.div.appendChild(this.base);
-		///////////////////////////////////////////
-		this.control = document.createElement("span");
-		div_style = this.control.style;
-		div_style.width = this.inner_radius * 2 + "px";
-		div_style.height = this.inner_radius * 2 + "px";
-		div_style.position = "absolute";
-		div_style.top = this.y - this.inner_radius + "px";
-		div_style.left = this.x - this.inner_radius + "px";
-		div_style.borderRadius = "50%";
-		div_style.backgroundColor = "rgba(200,200,200,0.3)";
-		div_style.borderWidth = "1px";
-		div_style.borderColor = "rgba(200,200,200,0.8)";
-		div_style.borderStyle = "solid";
-		this.div.appendChild(this.control);
-		///////////////////////////////////////////
-		var self = this;
-		// the event is binded in all the screen
-		// to captures fast movements
-		function touch_hander(evt) {
-			var touch_obj = evt.changedTouches ? evt.changedTouches[0] : evt;
-			if (self.mouse_support && !(touch_obj.buttons === 1)) {
-				return;
-			}
-			self.control.style.left = touch_obj.clientX - self.inner_radius + "px";
-			self.control.style.top = touch_obj.clientY - self.inner_radius + "px";
+  let dragStart = null;
+  let currentPos = { x: 0, y: 0 };
 
-			var dx = touch_obj.clientX - self.x;
-			var dy = touch_obj.clientY - self.y;
-			self.up = self.__is_up(dx, dy);
-			self.down = self.__is_down(dx, dy);
-			self.left = self.__is_left(dx, dy);
-			self.right = self.__is_right(dx, dy);
-		}
-		function clear_flags() {
-			self.left = false;
-			self.right = false;
-			self.up = false;
-			self.down = false;
-
-			self.control.style.top = self.y - self.inner_radius + "px";
-			self.control.style.left = self.x - self.inner_radius + "px";
-		}
-		this.bind("touchmove", touch_hander);
-		this.bind("touchstart", touch_hander);
-		this.bind("touchend", clear_flags);
-		if (this.mouse_support) {
-			this.bind("mousedown", touch_hander);
-			this.bind("mousemove", touch_hander);
-			this.bind("mouseup", clear_flags);
-		}
-	}
-	bind(evt, func) {
-		this.base.addEventListener(evt, func);
-		this.control.addEventListener(evt, func);
-	}
-}
-
-JoyStick.prototype.left = false;
-JoyStick.prototype.right = false;
-JoyStick.prototype.up = false;
-JoyStick.prototype.down = false;
-
-
-
-
-
-
-/*
-attributes:
-	+ x
-	+ y
-	+ func
-	+ mouse_support
-*/
-var JoyStickButton = function (attrs) {
-  this.radius = attrs.radius || 50;
-  this.x = attrs.x || 0;
-  this.y = attrs.y || 0;
-  this.text = attrs.text || "";
-  this.mouse_support = attrs.mouse_support || false;
-  if (JOYSTICK_DIV === null) {
-    __init_joystick_div();
-  }
-  this.base = document.createElement("span");
-  this.base.innerHTML = this.text;
-  div_style = this.base.style;
-  div_style.width = this.radius * 2 + "px";
-  div_style.height = this.radius * 2 + "px";
-  div_style.position = "absolute";
-  div_style.top = this.y - this.radius + "px";
-  div_style.left = this.x - this.radius + "px";
-  div_style.borderRadius = "50%";
-  div_style.backgroundColor = "rgba(255,255,255,0.1)";
-  div_style.borderWidth = "1px";
-  div_style.borderColor = "rgba(255,255,255,0.8)";
-  div_style.borderStyle = "solid";
-  JOYSTICK_DIV.appendChild(this.base);
-
-  if (attrs.func) {
-    if (this.mouse_support) {
-      this.bind("mousedown", attrs.func);
+  function handleMouseDown(event) {
+    stick.style.transition = '0s';
+    if (event.changedTouches) {
+      dragStart = {
+        x: event.changedTouches[0].clientX,
+        y: event.changedTouches[0].clientY,
+      };
+      return;
     }
-    this.bind("touchstart", attrs.func);
+    dragStart = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+
   }
 
-  var self = this;
-  function __over() {
-    div_style.backgroundColor = "rgba(255,255,255,0.3)";
+  function handleMouseMove(event) {
+    if (dragStart === null) return;
+    //event.preventDefault();
+    if (event.changedTouches) {
+      event.clientX = event.changedTouches[0].clientX;
+      event.clientY = event.changedTouches[0].clientY;
+    }
+    const xDiff = event.clientX - dragStart.x;
+    const yDiff = event.clientY - dragStart.y;
+    const angle = Math.atan2(yDiff, xDiff);
+		const distance = Math.min(maxDiff, Math.hypot(xDiff, yDiff));
+		const xNew = distance * Math.cos(angle);
+		const yNew = distance * Math.sin(angle);
+    stick.style.transform = `translate3d(${xNew}px, ${yNew}px, 0px)`;
+    currentPos = { x: xNew, y: yNew };
   }
-  function __leave() {
-    div_style.backgroundColor = "rgba(255,255,255,0.1)";
+
+  function handleMouseUp(event) {
+    if (dragStart === null) return;
+    stick.style.transition = '.2s';
+    stick.style.transform = `translate3d(0px, 0px, 0px)`;
+    dragStart = null;
+    currentPos = { x: 0, y: 0 };
   }
-  self.bind("touchstart", __over);
-  self.bind("touchend", __leave);
-  if (this.mouse_support) {
-    self.bind("mousedown", __over);
-    self.bind("mouseup", __leave);
-  }
-};
-JoyStickButton.prototype.bind = function (evt, func) {
-  this.base.addEventListener(evt, func);
-};
+
+  parent.appendChild(stick);
+  return {
+    getPosition: () => currentPos,
+  };
+}

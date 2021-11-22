@@ -3,7 +3,7 @@ import Player,  {DIRECTIONS, PLAYER}  from "./Player.js";
 import Modal  from "./Modal.js";
 import { companies } from "./data.js";
 import Room from "./Room.js";
-import { JoyStick } from "./Joystick.js";
+import { createJoystick } from "./Joystick.js";
 
 // GLOBAL CONSTANTS
 export const CANVAS = {
@@ -39,17 +39,13 @@ const gameMenu = document.querySelector('#menu')
 const gameWrapper =  document.querySelector('.sponsors-game-wrapper');
 const fullscreenButton = document.querySelector('[data-fullscreen]');
 const modalClose = document.querySelector('[data-close]');
+const joystickWrapper = document.querySelector('.joystick-wrapper');
 
 // CLASS INSTANCES
 const player = new Player(ctx);
 const modal = new Modal;
-export let room = new Room(ctx, 1, 1); 
-const joystick = new JoyStick({
-	radius: 60,
-	x: window.innerWidth * 3 / 4,
-	y: window.innerHeight * 3 / 4,
-	inner_radius: 50
-});
+export let room = new Room(ctx, 1, 1);
+const joystick = createJoystick(joystickWrapper);
 
 // EVENT LISTENERS
 window.addEventListener('keydown', keyDownHandler);
@@ -81,7 +77,7 @@ canvas.addEventListener("touchstart", (e) => {
   }
 });
 
-canvas.addEventListener('touchmove', touchHandler);
+// canvas.addEventListener('touchmove', touchHandler);
 //canvas.addEventListener('touchend', () => keyPresses = {})
 
 modalClose.addEventListener('click', () => modal.hide());
@@ -98,15 +94,6 @@ function keyDownHandler(event) {
 
 function keyUpHandler(event) {
     keyPresses[event.key] = false;
-}
-
-function touchHandler(event) {
-  const touchPos = event.touches[0];
-
-  //keyPresses[KEYS[DIRECTIONS.LEFT][0]] = (touchPos.clientX < player.x + player.width/2);
-  // keyPresses[KEYS[DIRECTIONS.RIGHT][0]] = (touchPos.clientX > player.x + player.width/2);
-  // keyPresses[KEYS[DIRECTIONS.UP][0]] = (touchPos.clientY < player.y + player.height/2);
-  // keyPresses[KEYS[DIRECTIONS.DOWN][0]] = (touchPos.clientY > player.y + player.height/2);
 }
 
 function selectPlayer(playerElement){
@@ -136,21 +123,24 @@ function animation(){
   ctx.rect(-1, -1, CANVAS.WIDTH + 2, CANVAS.HEIGHT + 2);
   ctx.stroke();
 
+  // mobile movement
+  let joystickPosition = joystick.getPosition() || {x: 0, y: 0};
+
   // movement check
   let hasMoved = false;
 
-  if (isDirectionPressed(DIRECTIONS.UP)) {
+  if (isDirectionPressed(DIRECTIONS.UP) || joystickPosition.y < 0) {
     player.move(0, -1, DIRECTIONS.UP);
     hasMoved = true;
-  } else if (isDirectionPressed(DIRECTIONS.DOWN)) {
+  } else if (isDirectionPressed(DIRECTIONS.DOWN) || joystickPosition.y > 0) {
     player.move(0, 1, DIRECTIONS.DOWN);
     hasMoved = true;
   }
 
-  if (isDirectionPressed(DIRECTIONS.LEFT)) {
+  if (isDirectionPressed(DIRECTIONS.LEFT) || joystickPosition.x < 0) {
     player.move(-1, 0, DIRECTIONS.LEFT);
     hasMoved = true;
-  } else if (isDirectionPressed(DIRECTIONS.RIGHT)) {
+  } else if (isDirectionPressed(DIRECTIONS.RIGHT) || joystickPosition.x > 0) {
     player.move(1, 0, DIRECTIONS.RIGHT);
     hasMoved = true;
   }
